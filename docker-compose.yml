@@ -1,0 +1,9 @@
+version: "3.9"
+
+services:
+  bot:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - BOT_TOKEN=8610154837:AAG9Khd_kakxD4xamSr83jTutf6HEawFUE8
