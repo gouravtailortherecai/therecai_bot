@@ -5,6 +5,7 @@ from telegram.ext import Application, CommandHandler, MessageHandler, ContextTyp
 from database import engine, AsyncSessionLocal
 from models import Base, Chat
 from sqlalchemy import insert
+from ai_service import get_career_response
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 
@@ -38,7 +39,8 @@ async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if "experience" in text.lower() or "education" in text.lower():
         await update.message.reply_document(document=open("resume.pdf", "rb"))
     else:
-        await update.message.reply_text("Message saved ✅")
+        ai_reply = await get_career_response(text)
+        await update.message.reply_text(ai_reply)
 
 
 telegram_app.add_handler(CommandHandler("start", start))
@@ -64,4 +66,5 @@ async def webhook(request: Request):
     await telegram_app.process_update(update)
 
     return {"ok": True}
+
 
